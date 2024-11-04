@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id                   Int    @id @default(autoincrement())
+  collection_direction Int
+  first_name            String
+  last_name             String
+  destination_address  String
+  telephone            String
+  email                String @unique
+  indications          String
+  department           String
+  town                 String
+  reference            String
+  scheduled_date       DateTime
+
+  Bulk Bulk[] @relation("PersonBulks")
+}
+
+model Bulk {
+  id               Int      @id @default(autoincrement())
+  length           Float
+  height           Float
+  width            Float
+  weight_pounds    Float
+  description      String
+  personId         Int      
+  person           Person   @relation("PersonBulks", fields: [personId], references: [id])
+}
